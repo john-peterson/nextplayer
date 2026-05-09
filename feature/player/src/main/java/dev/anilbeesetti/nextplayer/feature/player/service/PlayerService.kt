@@ -458,6 +458,7 @@ class PlayerService : MediaSessionService() {
                     return@future SessionResult(SessionResult.RESULT_SUCCESS)
                 }
 
+
                 CustomCommands.GET_LOUDNESS_GAIN -> {
                     return@future SessionResult(
                         SessionResult.RESULT_SUCCESS,
@@ -465,6 +466,12 @@ class PlayerService : MediaSessionService() {
                             putInt(CustomCommands.LOUDNESS_GAIN_KEY, currentVolumeGain)
                         },
                     )
+                }
+
+                CustomCommands.FLIP -> {
+                    val gain = args.getInt(CustomCommands.LOUDNESS_GAIN_KEY, 0)
+                    setEnhancerTargetGain(gain)
+                    return@future SessionResult(SessionResult.RESULT_SUCCESS)
                 }
 
                 CustomCommands.GET_SUBTITLE_DELAY -> {

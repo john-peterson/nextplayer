@@ -52,9 +52,15 @@ class RotationState(
         private set
 
     fun rotate() {
-        activity.requestedOrientation = when (activity.resources.configuration.orientation) {
-            Configuration.ORIENTATION_LANDSCAPE -> ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
-            else -> ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+        // activity.requestedOrientation = when (activity.resources.configuration.orientation) {
+        activity.requestedOrientation = when (activity.requestedOrientation) {
+            // Configuration.ORIENTATION_LANDSCAPE -> ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE
+            ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT -> ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+            ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE -> ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE
+            ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE -> ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
+            // ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE
+            // else -> ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+            else -> ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
         }
     }
 

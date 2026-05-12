@@ -31,6 +31,8 @@ import androidx.media3.transformer.Transformer
 import dev.anilbeesetti.nextplayer.core.common.Logger
 import dev.anilbeesetti.nextplayer.core.model.ScreenOrientation
 import dev.anilbeesetti.nextplayer.feature.player.extensions.isPortrait
+import dev.anilbeesetti.nextplayer.feature.player.service.stopPlayerSession
+import dev.anilbeesetti.nextplayer.feature.player.service.flip
 
 @UnstableApi
 @Composable
@@ -65,6 +67,8 @@ class RotationState(
         private set
 
     fun rotateLong() {
+        // player.flip()
+        // return
         activity.requestedOrientation = when (activity.resources.configuration.orientation) {
             Configuration.ORIENTATION_LANDSCAPE -> ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
             else -> ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
@@ -81,7 +85,7 @@ class RotationState(
         try {
             val exoPlayer = player as ExoPlayer
         } catch (e: Exception) {
-            Logger.logDebug("Rotate", e.toString())
+            Logger.logDebug("mytag", e.toString())
         }
 
         // Logger.logError("mytag", player::class.qualifiedName+"")
@@ -102,6 +106,8 @@ class RotationState(
             .build()
             player.setMediaItem(editedMediaItem.mediaItem)
             // exoPlayer.setVideoEffects(emptyList())
+            Toast.makeText(activity, "remove effect ", 0).show()
+
         } else {
             val transformationMatrix = Matrix()
             transformationMatrix.postScale(-1f, 1f)
@@ -120,9 +126,22 @@ class RotationState(
             .setEffects(Effects(listOf(), effects)) // audioEffects, videoEffects
             // .setVideoEffects(effects)
             .build()
-            player.setMediaItem(editedMediaItem.mediaItem)
 
-            Toast.makeText(activity, "flip video", 0).show()
+            player.stop()
+            player.setMediaItem(editedMediaItem.mediaItem)
+            player.prepare();
+            player.play();
+
+            // player.setMediaItem(...);
+            // player.setVideoEffects(effectList1);
+            // player.prepare();
+            // player.play();
+
+            // player.setEffects(Effects(listOf(), effects)) // audioEffects, videoEffects
+
+
+
+            Toast.makeText(activity, "set effect", 0).show()
         }
         flip = !flip
     }

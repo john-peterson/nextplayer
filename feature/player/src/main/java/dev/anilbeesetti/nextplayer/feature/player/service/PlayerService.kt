@@ -20,6 +20,7 @@ import androidx.media3.common.Player.DISCONTINUITY_REASON_SEEK
 import androidx.media3.common.TrackSelectionParameters
 import androidx.media3.common.Tracks
 import androidx.media3.common.util.UnstableApi
+import androidx.media3.effect.Brightness
 import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
@@ -468,12 +469,6 @@ class PlayerService : MediaSessionService() {
                     )
                 }
 
-                CustomCommands.FLIP -> {
-                    val gain = args.getInt(CustomCommands.LOUDNESS_GAIN_KEY, 0)
-                    setEnhancerTargetGain(gain)
-                    return@future SessionResult(SessionResult.RESULT_SUCCESS)
-                }
-
                 CustomCommands.GET_SUBTITLE_DELAY -> {
                     val subtitleDelay = mediaSession?.player?.playerSpecificSubtitleDelayMilliseconds ?: 0
                     return@future SessionResult(
@@ -520,6 +515,24 @@ class PlayerService : MediaSessionService() {
                         player.stop()
                     }
                     stopSelf()
+                    return@future SessionResult(SessionResult.RESULT_SUCCESS)
+                }
+
+                // CustomCommands.SEPIA -> {
+                //     val sepiaEffect = MatrixTransformationEffect(sepiaMatrix)
+                //     player.setVideoEffects(listOf(sepiaEffect))
+                //     return Futures.immediateFuture(SessionResult(SessionResult.RESULT_SUCCESS))
+                // }
+
+                CustomCommands.FLIP -> {
+                    val brightnessEffect = Brightness(0.5f) // Increase brightness
+                    val videoEffects = listOf(brightnessEffect)
+                    // Applying to an ExoPlayer instance
+                    // val exoPlayer = player as? ExoPlayer
+                    mediaSession?.run {
+                        // player.setVideoEffects(videoEffects)
+                        // player.setEffects(Effects(listOf(), videoEffects)) // audioEffects, videoEffects
+                    }
                     return@future SessionResult(SessionResult.RESULT_SUCCESS)
                 }
             }

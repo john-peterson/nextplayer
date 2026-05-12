@@ -16,10 +16,12 @@ enum class CustomCommands(val customAction: String) {
     GET_SUBTITLE_SPEED(customAction = "GET_SUBTITLE_SPEED"),
     SET_SUBTITLE_SPEED(customAction = "SET_SUBTITLE_SPEED"),
     STOP_PLAYER_SESSION(customAction = "STOP_PLAYER_SESSION"),
+    // ACTION_APPLY_SEPIA(customAction = "ACTION_APPLY_SEPIA"),
+    FLIP(customAction = "FLIP"),
+    
     IS_LOUDNESS_GAIN_SUPPORTED(customAction = "IS_LOUDNESS_GAIN_SUPPORTED"),
     SET_LOUDNESS_GAIN(customAction = "SET_LOUDNESS_GAIN"),
     GET_LOUDNESS_GAIN(customAction = "GET_LOUDNESS_GAIN"),
-    FLIP(customAction = "FLIP"),
     ;
 
     val sessionCommand = SessionCommand(customAction, Bundle.EMPTY)
@@ -96,6 +98,14 @@ suspend fun MediaController.getSubtitleSpeed(): Float {
 fun MediaController.stopPlayerSession() {
     sendCustomCommand(CustomCommands.STOP_PLAYER_SESSION.sessionCommand, Bundle.EMPTY)
 }
+
+fun MediaController.flip() {
+    sendCustomCommand(CustomCommands.FLIP.sessionCommand, Bundle.EMPTY)
+}
+
+// fun MediaController.sepia() {
+//     sendCustomCommand(CustomCommands.ACTION_APPLY_SEPIA.sessionCommand, Bundle.EMPTY)
+// }
 
 fun MediaController.setLoudnessGain(gain: Int) {
     val args = Bundle().apply {
